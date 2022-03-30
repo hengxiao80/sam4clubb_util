@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "ERROR IN USAGE."
+    echo "    Syntax: com3D2nc_autosplitall [prefix] [filestamp]."
+    exit 1
+fi
+
+prefix=$1
+tstamp=$2
+
+# zero-pad time stamp
+printf -v timestamp "%06d" $tstamp
+
+fileprefix="${prefix}${timestamp}"
+
+echo "======================="
+echo "Converting ... $fileprefix in the background."
+echo "... do a tail -f on the log files to check conversion progress."
+
+rm *.log
+com3D2nc_autosplitmw "${fileprefix}.com3D" > convert.log &
+com3D2nc_autosplitmw "${fileprefix}_micro.com3D" > convert_micro.log &
+com3D2nc_autosplitmw "${fileprefix}_sedim.com3D" > convert_sedim.log &
+com3D2nc_autosplitmw "${fileprefix}_frzmr.com3D" > convert_frzmr.log &
+com3D2nc_autosplitmw "${fileprefix}_frznc.com3D" > convert_frznc.log &
+echo "======================="
