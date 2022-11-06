@@ -16,14 +16,14 @@ c variables:
 	character(10) units
 	character(8)  name
 	character(1)  blank
-	character(10) c_min(500), c_max(500)
-	character (12) c_z(500),c_p(500),c_dx, c_dy, c_time	
+	character(10) c_min(600), c_max(600)
+	character (12) c_z(600),c_p(600),c_dx, c_dy, c_time	
 	character(3) nm
 
 	integer(2), allocatable :: byte(:)
 	real(4), allocatable ::  fld(:)
 	real(4) fmax,fmin
-	real(4) dx,dy,z(500),p(500),x(100000),y(100000),time
+	real(4) dx,dy,z(600),p(600),x(100000),y(100000),time
 
 	integer nsubs,nsubsx,nsubsy,nx,ny,nz,nfields
 	integer i,j,k,k1,k2,n,i0,j0,nx_gl,ny_gl,count,ifields
@@ -106,7 +106,7 @@ c The output filename:
 c
 c Initialize netcdf stuff, define variables,etc.
 c
-	err = NF_CREATE(filename, NF_CLOBBER, ncid)
+	err = NF_CREATE(filename, OR(NF_CLOBBER, NF_NETCDF4), ncid)
 	err = NF_REDEF(ncid)
 
 	err = NF_DEF_DIM(ncid, 'x', nx_gl, xid)
@@ -202,13 +202,20 @@ c
 	  ifields=ifields+1
 
 	  err = NF_REDEF(ncid)
-          err = NF_DEF_VAR(ncid,name, NF_FLOAT, ndimids, vdimids, varid)
+	  if (err .ne. NF_NOERR) print*, "NF_REDEF", NF_STRERROR(err)
+	  err = NF_DEF_VAR(ncid,name, NF_FLOAT, ndimids, vdimids, varid)
+	  if (err .ne. NF_NOERR) print*, "NF_DEF_VAR", NF_STRERROR(err)
 	  err = NF_PUT_ATT_TEXT(ncid,varid,'long_name',
      &		strlen1(long_name),long_name(1:strlen1(long_name)))
+	  if (err .ne. NF_NOERR) print*, NF_STRERROR(err)
 	  err = NF_PUT_ATT_TEXT(ncid,varid,'units',
      &		strlen1(units),units(1:strlen1(units)))
+	  if (err .ne. NF_NOERR) print*, NF_STRERROR(err)
 	  err = NF_ENDDEF(ncid)
+	  if (err .ne. NF_NOERR) print*, "NF_ENDDEF", NF_STRERROR(err)
+	  if (err .ne. NF_NOERR) print*, NF_STRERROR(err)
 	  err = NF_PUT_VAR_REAL(ncid, varid, fld)
+	  if (err .ne. NF_NOERR) print*, "NF_PUT_VAR", NF_STRERROR(err)
 
 
 	end do ! while

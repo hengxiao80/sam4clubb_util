@@ -8,12 +8,12 @@ c variables:
 	character(10) units
 	character(8)  name
 	character(1)  blank/" "/
-        character(10) c_min(500), c_max(500)
-        character(12) c_z(500), c_p(500), c_dx, c_dy, c_time
+        character(10) c_min(600), c_max(600)
+        character(12) c_z(600), c_p(600), c_dx, c_dy, c_time
         character(4) rankchar
 
 	integer(2), allocatable :: byte(:)
-	real dx,dy,z(500),p(500),time
+	real dx,dy,z(600),p(600),time
 	integer nsubs,nsubsx,nsubsy,nx,ny,nz,nfields
 	integer i,k,n,nx_gl,ny_gl,ifields
 
