@@ -26,9 +26,9 @@ c and some other useful information
         ntime = 0
 	rewind(unit)
         do while(.true.)
-         read(unit,end=111)  caseid,version
+         read(unit,end=111, err=111)  caseid,version
          ntime=ntime+1
-         read (unit) time(ntime),f,nstep,n,n,n,nzm,f,f,f,
+         read (unit, err=111) time(ntime),f,nstep,n,n,n,nzm,f,f,f,
      &          (z(k),k=1,nzm),(z(k),k=1,nzm),f,(p(k),k=1,nzm)
          print*,'NSTEP=',nstep
          read (unit) hbuf_length
@@ -121,7 +121,11 @@ c time-point ntimeend.
 	integer nread ! number of time-points actually read
 !   local:
 	integer ntime,k,l,hbuf_length
+#ifdef UWM_STATS
 	character *20 namelist
+#else
+	character *8 namelist
+#endif
 
 	rewind(unit)
 	ntime=0

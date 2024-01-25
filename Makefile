@@ -94,10 +94,11 @@ endif
 ### MWSWONG: on NERSC/edison
 ifeq ($(PLATFORM),Linux)
 #ifeq ($(PLATFORM),NOTNOT)
-INC_NETCDF = ${NETCDF_DIR}/include 
-LIB_NETCDF = ${NETCDF_DIR}/lib 
-FF = ftn -C -I${INC_NETCDF} -DUWM_STATS -DPNNL_STATS#sunf95 -g -C -fpp -xO3 -xvector=simd -ftrap=common -I${INC_NETCDF} -DUWM_STATS
-LDFLAGS = -L${LIB_NETCDF} -lnetcdf  
+INC_NETCDF = ${NETCDF}/include 
+LIB_NETCDF = ${NETCDF}/lib 
+# FF = ifort -C -I${INC_NETCDF} -extend-source 132 -DUWM_STATS -DPNNL_STATS#sunf95 -g -C -fpp -xO3 -xvector=simd -ftrap=common -I${INC_NETCDF} -DUWM_STATS
+FF = ifort -C -I${INC_NETCDF} -extend-source 132
+LDFLAGS = -L${LIB_NETCDF} -lnetcdf  -lnetcdff
 
 endif
 

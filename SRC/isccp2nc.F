@@ -6,8 +6,8 @@ c-------------------------------------------------------
 #include "netcdf.inc"
 #include "hbuf.inc"
 #else
-   include 'netcdf.inc'
-   include 'hbuf.inc'
+#include "netcdf.inc"
+#include "hbuf.inc"
 #endif	
 	integer flag(HBUF_MAX_LENGTH)
 c-------------------------------------------------------	
